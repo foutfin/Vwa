@@ -36,7 +36,7 @@ export default ({ db, setUi, ffmpeg }) => {
             const urls = {
                 wasm: "https://unpkg.com/@ffmpeg/core@0.12.2/dist/esm/ffmpeg-core.wasm",
                 core: "https://unpkg.com/@ffmpeg/core@0.12.2/dist/esm/ffmpeg-core.js",
-                worker:"https://unpkg.com/@ffmpeg/core@0.12.2/dist/esm/ffmpeg-core.worker.js"
+               worker:"https://unpkg.com/@ffmpeg/core-mt@0.12.2/dist/esm/ffmpeg-core.worker.js"
             }
 
 
@@ -45,24 +45,23 @@ export default ({ db, setUi, ffmpeg }) => {
             s.getAll().onsuccess = (e) => {
                 if (e.target.result.length == 2) {
                     let coreBlob, wasmBlob,workerBlob;
-                    const baseURL = 'https://unpkg.com/@ffmpeg/core@0.12.2/dist/esm'
                     e.target.result.forEach(val => {
                         if (val.id == "core") {
                             coreBlob = val.data
-                            console.log(val.data.type)
+                        
                         } else if (val.id == "wasm") {
                             wasmBlob = val.data
-                            console.log(val.data.type)
+                            
                         }else if(val.id == "worker"){
                             workerBlob = val.data
-                            console.log(val.data.type)
+                            
                         }
                     })
                     ffmpeg.load({
                         
                         coreURL: URL.createObjectURL(coreBlob),
                         wasmURL: URL.createObjectURL(wasmBlob),
-                        // workerURL:URL.createObjectURL(workerBlob),
+                        //workerURL:URL.createObjectURL(workerBlob),
                     }).then(res => {
                         if (res) {
                             
@@ -92,19 +91,19 @@ export default ({ db, setUi, ffmpeg }) => {
                                         e.target.result.forEach(val => {
                                             if (val.id == "core") {
                                                 coreBlob = val.data
-                                                //console.log(val.data.type)
+                                                
                                             } else if (val.id == "wasm") {
                                                 wasmBlob = val.data
-                                                //console.log(val.data.type)
+                                            
                                             }else if(val.id == "worker"){
                                                 workerBlob = val.data
-                                                //console.log(val.data.type)
+                                               
                                             }
                                         })
                                         ffmpeg.load({
                                             coreURL: URL.createObjectURL(coreBlob),
                                             wasmURL: URL.createObjectURL(wasmBlob),
-                                            // workerURL:URL.createObjectURL(workerBlob)
+                                            //workerURL:URL.createObjectURL(workerBlob)
                                         }).then(res => {
                                             if (res) {
                                                 setState(3)
@@ -116,13 +115,6 @@ export default ({ db, setUi, ffmpeg }) => {
 
                                 }
                             }
-
-                            // req.onsuccess = (e) => {
-                            //     console.log("core package added",e)
-                            // }
-                            // req.onerror = (e) => {
-                            //     console.log("unable to get core package", e)
-                            // }
 
                         })
                         .catch(err=>{
@@ -143,23 +135,23 @@ export default ({ db, setUi, ffmpeg }) => {
                                 //console.log("wasm package added", e)
                                 ffmpegStore.getAll().onsuccess = (e) => {
                                     if (e.target.result.length == 2) {
-                                        let coreBlob, wasmBlob,workerBlob;
+                                        let coreBlob, wasmBlob,workerBlob
                                         e.target.result.forEach(val => {
                                             if (val.id == "core") {
                                                 coreBlob = val.data
-                                                //console.log(val.data.type)
+                                                
                                             } else if (val.id == "wasm") {
                                                 wasmBlob = val.data
-                                                //console.log(val.data.type)
+                                              
                                             }else if(val.id == "worker"){
                                                 workerBlob = val.data
-                                                //console.log(val.data.type)
+                                                
                                             }
                                         })
                                         ffmpeg.load({
                                             coreURL: URL.createObjectURL(coreBlob),
                                             wasmURL: URL.createObjectURL(wasmBlob),
-                                            // workerURL:URL.createObjectURL(workerBlob)
+                                        //workerURL:URL.createObjectURL(workerBlob)
                                         }).then(res => {
                                             if (res) {
                                                 
@@ -171,14 +163,6 @@ export default ({ db, setUi, ffmpeg }) => {
                                     }
                                 }
                             }
-
-                            // req.onsuccess = (e) => {
-
-
-                            // }
-                            // req.onerror = (e) => {
-                            //     console.log("unable to get wasm package", e)
-                            // }
 
                         })
                         .catch(err=>{
@@ -202,19 +186,19 @@ export default ({ db, setUi, ffmpeg }) => {
             //                             e.target.result.forEach(val => {
             //                                 if (val.id == "core") {
             //                                     coreBlob = val.data
-            //                                     console.log(val.data.type)
+                                                
             //                                 } else if (val.id == "wasm") {
             //                                     wasmBlob = val.data
-            //                                     console.log(val.data.type)
+                                              
             //                                 }else if(val.id == "worker"){
             //                                     workerBlob = val.data
-            //                                     console.log(val.data.type)
+                                               
             //                                 }
             //                             })
             //                             ffmpeg.load({
             //                                 coreURL: URL.createObjectURL(coreBlob),
             //                                 wasmURL: URL.createObjectURL(wasmBlob),
-            //                                 workerURL:URL.createObjectURL(workerBlob)
+            //                                 workerURL: URL.createObjectURL(workerBlob)
             //                             }).then(res => {
             //                                 if (res) {
             //                                     setLoaded(true);
@@ -226,14 +210,6 @@ export default ({ db, setUi, ffmpeg }) => {
             //                         }
             //                     }
             //                 }
-
-            //                 // req.onsuccess = (e) => {
-
-
-            //                 // }
-            //                 // req.onerror = (e) => {
-            //                 //     console.log("unable to get wasm package", e)
-            //                 // }
 
             //             })
             //     }
