@@ -1,8 +1,26 @@
-# React + Vite
+# Vwa
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Playable demo of video and Audio stream extractor using ffmpeg.wasm.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- Saving wasm file locally(no need to fetch again if page reloads)
+- Can able to download
+- Extract Video and Audio stream separately
+
+## Architecture
+<img src="img/arch.png" height="300"/>
+
+## Local Development
+``` bash
+npm install
+npm run execute
+```
+
+## Resources
+- [Indexed Db](https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API/Using_IndexedDB)
+- [Blob](https://developer.mozilla.org/en-US/docs/Web/API/Blob)
+- [FFmpeg](https://ffmpeg.org/ffmpeg.html)
+- [FFmpeg wasm](https://github.com/ffmpegwasm/ffmpeg.wasm)
+
+
