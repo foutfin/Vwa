@@ -7,6 +7,7 @@ Playable demo of video and Audio stream extractor using ffmpeg.wasm.
 - Saving wasm file locally(no need to fetch again if page reloads)
 - Can able to download
 - Extract Video and Audio stream separately
+- No data send on remote server
 
 ## Architecture
 <img src="img/arch.png" height="300"/>
