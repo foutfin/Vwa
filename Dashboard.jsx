@@ -50,18 +50,24 @@ export default ({ffmpeg}) =>{
             <h2>Dashboard</h2>
 
             <input ref={fileRef} type="file" accept='video/*' />
-            <br/>
-            <h3> Input Video stream </h3>
-            <video ref={invideoRef} controls width="300" height="300"></video><br/>
-            <button onClick={extract}>Extract Streams</button><br/>
-            <br/>
-            <h3>Result :- </h3>
-            <p style={{marginTop:50}}>Audio</p>
-            <audio ref={outaudioRef} controls></audio><br/>
-            {audiodownload && <a href={audiourl} download={"audio_output.mp3"}>Download Only audio</a>}
-            <p>Video</p>
-            <video ref={outputVidRef} controls width="300" height="300" ></video><br/>
-            {videodownload && <a href={videourl} download={"Video_output.mp4"}>Download Only video</a>}
+            <div style={{display:"flex",flexWrap:"wrap",gap:20}}>
+
+                <div style={{border:"3px solid #000",width:"fit-content",padding:20,marginTop:10}}>
+                    <h3 style={{textDecoration:"underline"}}> Input Video stream :- </h3>
+                    <video ref={invideoRef} controls width="300" height="300"></video><br/>
+                    <button onClick={extract}>Extract Streams</button><br/>
+                    <br/>
+                </div>
+                <div style={{border:"3px solid #000",width:"fit-content",padding:20 ,marginTop:10}}>
+                    <h3 style={{textDecoration:"underline"}}>Result :- </h3>
+                    <p style={{marginTop:50}}>Audio</p>
+                    <audio ref={outaudioRef} controls></audio><br/>
+                    {audiodownload && <a href={audiourl} download={"audio_output.mp3"}>Download Only audio</a>}
+                    <p>Video</p>
+                    <video ref={outputVidRef} controls width="300" height="300" ></video><br/>
+                    {videodownload && <a href={videourl} download={"Video_output.mp4"}>Download Only video</a>}
+                </div>
+            </div>
         </div>
     )
 }
