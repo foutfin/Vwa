@@ -49,8 +49,8 @@ export default ({ffmpeg}) =>{
         <div>
             <h2>Dashboard</h2>
 
-            <input ref={fileRef} type="file" accept='video/*' />
-            <div style={{display:"flex",flexWrap:"wrap",gap:20}}>
+            <input style={{marginTop:10,marginInline:"auto",display:"block"}} ref={fileRef} type="file" accept='video/*' />
+            <div style={{display:"flex",flexWrap:"wrap",gap:20,justifyContent:"center"}}>
 
                 <div style={{border:"3px solid #000",width:"fit-content",padding:20,marginTop:10}}>
                     <h3 style={{textDecoration:"underline"}}> Input Video stream :- </h3>
@@ -60,10 +60,10 @@ export default ({ffmpeg}) =>{
                 </div>
                 <div style={{border:"3px solid #000",width:"fit-content",padding:20 ,marginTop:10}}>
                     <h3 style={{textDecoration:"underline"}}>Result :- </h3>
-                    <p style={{marginTop:50}}>Audio</p>
+                    <p style={{marginTop:50,border:"1px solid #000",padding:5,width:"fit-content"}}>Audio</p>
                     <audio ref={outaudioRef} controls></audio><br/>
                     {audiodownload && <a href={audiourl} download={"audio_output.mp3"}>Download Only audio</a>}
-                    <p>Video</p>
+                    <p style={{border:"1px solid #000",padding:5,width:"fit-content"}}>Video</p>
                     <video ref={outputVidRef} controls width="300" height="300" ></video><br/>
                     {videodownload && <a href={videourl} download={"Video_output.mp4"}>Download Only video</a>}
                 </div>
