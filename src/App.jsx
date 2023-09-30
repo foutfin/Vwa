@@ -1,7 +1,7 @@
 import './App.css'
 import { useRef, useState } from 'react'
 import Loading from './Loading'
-import Dashboard from '../Dashboard'
+import Dashboard from './Dashboard'
 import { FFmpeg } from '@ffmpeg/ffmpeg';
 
 // 0 -> home
