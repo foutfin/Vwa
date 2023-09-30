@@ -151,7 +151,7 @@ export default ({ db, setUi, ffmpeg }) => {
                                         ffmpeg.load({
                                             coreURL: URL.createObjectURL(coreBlob),
                                             wasmURL: URL.createObjectURL(wasmBlob),
-                                        //workerURL:URL.createObjectURL(workerBlob)
+                                            //workerURL:URL.createObjectURL(workerBlob)
                                         }).then(res => {
                                             if (res) {
                                                 
