@@ -117,8 +117,7 @@ export default ({ db, setUi, ffmpeg }) => {
                             }
 
                         })
-                        .catch(err=>{
-                            setMessage("Internet Lost required once to get  the necessary packages")
+                        .catch(err=>{ setMessage("Internet Lost required once to get  the necessary packages")
                             setState(1) 
                         })
                 }
@@ -223,7 +222,7 @@ export default ({ db, setUi, ffmpeg }) => {
 
     let jsx;
     if (state == 0) {
-        jsx = <p>Loading</p>
+        jsx = <p>Loading...</p>
     } else if (state == 1) {
         jsx = <p>{message}</p>
     } else if (state == 2) {
