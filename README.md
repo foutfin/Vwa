@@ -17,7 +17,7 @@ Playable demo of video and Audio stream extractor using ffmpeg.wasm.
 ## Local Development
 ``` bash
 npm install
-npm run execute
+npm run dev
 ```
 
 ## Resources
