@@ -8,6 +8,8 @@ Playable demo of video and Audio stream extractor using ffmpeg.wasm.
 - Can able to download
 - Extract Video and Audio stream separately
 - No data send on remote server
+- Pwa support(Now can be installed Locally on devices)
+- Timeline support(Extract certain Portion)
 
 ## Architecture
 <img src="img/arch.png" height="300"/>
