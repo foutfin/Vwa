@@ -60,22 +60,20 @@ function App() {
     setUi(1)
   }
 
-  if (ui == 0) {
-    return (
-      <div>
-        <p>Testing purpose</p>
-        <button onClick={loadLoading}>Go to playground</button>
-      </div>
-    )
-  } else if (ui == 1) {
-    return (
-      <Loading db={db.current} setUi={setUi} ffmpeg={ffmpegRef.current} />
-    )
-  } else if (ui == 2) {
-    return (
-      <Dashboard ffmpeg={ffmpegRef.current} />
-    )
-  }
+  return (
+    <div className='h-[100dvh] w-[100dvw] flex justify-center xl:items-center'>
+      { ui == 0 ? (
+        <div className='flex flex-col justify-center items-center gap-2'>
+          <p className="italic">Testing purpose</p>
+          <button className="bg-blue-500 text-white px-4 py-2 rounded shadow" onClick={loadLoading}>Go to playground</button>
+        </div>
+      ) : ui == 1 ? (
+        <Loading db={db.current} setUi={setUi} ffmpeg={ffmpegRef.current} />
+      ) : (
+        <Dashboard ffmpeg={ffmpegRef.current} />
+      )}
+    </div>
+  )
 
 
 }
