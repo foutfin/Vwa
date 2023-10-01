@@ -139,13 +139,13 @@ export default ({ffmpeg}) =>{
                     <div>
                         <p className='font-bold'>Audio</p>
                         <audio className="mb-2 rounded-md" ref={outaudioRef} controls></audio>
-                        {audiodownload && <a className='text-center rounded px-2 py-1 bg-blue-500 text-white' href={audiourl} download={"audio_output.mp3"}>Download Only Audio</a>}
+                        {audiodownload && <a className='block w-full text-center rounded px-2 py-1 bg-blue-500 text-white' href={audiourl} download={"audio_output.mp3"}>Download Only Audio</a>}
                     </div>
 
                     <div>
                         <p className='font-bold'>Video</p>
                         <video ref={outputVidRef} className="mb-2 rounded-md" controls width="300" height="300" ></video>
-                        {videodownload && <a className='text-center rounded px-2 py-1 bg-blue-500 text-white' href={videourl} download={"Video_output.mp4"}>Download Only Video</a>}
+                        {videodownload && <a className='block w-full text-center rounded px-2 py-1 bg-blue-500 text-white' href={videourl} download={"Video_output.mp4"}>Download Only Video</a>}
                     </div>
                 </div>
             </div>
