@@ -1,10 +1,11 @@
 import './App.css'
 import { useRef, useState } from 'react'
 import Loading from './Loading'
-import Dashboard from './Dashboard'
+// import Dashboard from './DashboardOld'
 import { FFmpeg } from '@ffmpeg/ffmpeg';
+import Header from './header';
+import Dashboard from './dashboard';
 
-// 0 -> home
 // 1 -> loading
 // 2 -> dashboard
 
@@ -17,7 +18,7 @@ function App() {
     console.log("Logging ffmpeg : ",message,type);
   });
 
-  const [ui, setUi] = useState(0)
+  const [ui, setUi] = useState(1)
 
 
   const handleLoad = () => {
@@ -61,21 +62,22 @@ function App() {
   }
 
   return (
-    <div className='h-[100dvh] w-[100dvw] flex justify-center xl:items-center'>
-      { ui == 0 ? (
-        <div className='flex flex-col justify-center items-center gap-2'>
-          <p className="italic">Testing purpose</p>
-          <button className="bg-blue-500 text-white px-4 py-2 rounded shadow" onClick={loadLoading}>Go to playground</button>
-        </div>
-      ) : ui == 1 ? (
-        <Loading db={db.current} setUi={setUi} ffmpeg={ffmpegRef.current} />
-      ) : (
-        <Dashboard ffmpeg={ffmpegRef.current} />
-      )}
-    </div>
+    <>
+      <Header />
+      { ui == 1 ?<Loading db={db.current} setUi={setUi} ffmpeg={ffmpegRef.current} />  : <Dashboard ffmpeg={ffmpegRef.current}/> }
+        
+   </>
   )
 
 
 }
 
 export default App
+// <Dashboard ffmpeg={ffmpegRef.current} />
+
+// (
+//   <div className='flex flex-col justify-center items-center gap-2'>
+//     <p className="italic">Testing purpose</p>
+//     <button className="bg-blue-500 text-white px-4 py-2 rounded shadow" onClick={loadLoading}>Go to playground</button>
+//   </div>
+// )

@@ -1,0 +1,176 @@
+import {  useRef, useState } from "react"
+import { addfile } from "../utils/utils"
+import CubeLoading from "./cubeLoading"
+import Inputfield from "./inputfield"
+import {  toast } from 'react-toastify'
+
+
+export default ({ ffmpeg,setScreen }) => {
+    const video = useRef(null)
+    const start = useRef(null)
+    const end = useRef(null)
+
+    const [invideo, setInVideo] = useState(null)
+    const [output, setOutput] = useState(null)
+    const [processing, setProcessing] = useState(false)
+    
+
+    const [tab, setTab] = useState(true) //Tabs :- true -> input , false -> output
+
+   
+    const extractWithTime = async () => {
+        if (invideo && start.current && end.current) {
+            const startTime = parseInt(start.current.value)
+            const endTIme = parseInt(end.current.value)
+            
+            if(startTime >= endTIme){
+                toast.error('Start Time should not be greater than End Time')
+                return
+            }
+
+            if (startTime >= video.current.duration || startTime < 0){
+                toast.error('Start Time should not be greater than video duration and  be positive')
+                return
+            }
+
+            if (endTIme >= video.current.duration || endTIme < 0){
+                toast.error('End Time should not be greater than video duration and  be positive')
+                return
+            }
+
+            setProcessing(true)
+            setOutput(null)
+            setTab(false)
+            await addfile(ffmpeg, invideo)
+
+            const executedAudio = await ffmpeg.exec(["-ss",`${startTime}`,'-i',invideo.name,"-t",`${endTIme-startTime}`, '-map','0:a','-acodec','copy','audio.mp4'])
+            if(executedAudio != 0){
+                toast.error('Something went wronge in audio extraction')
+                return
+            }
+
+            const executedVideo = await ffmpeg.exec(["-ss",`${startTime}`,'-i',invideo.name,"-t",`${endTIme-startTime}`,'-c:v','copy','-an','video.mp4'])
+            
+            if(executedVideo != 0){
+                toast.error('Something went wronge in video extraction')
+                return
+            }else if (executedVideo == 0){
+                toast.success('Extracted successfully')
+            }
+            const outputVideo = await ffmpeg.readFile('video.mp4')
+            const outputAudio = await ffmpeg.readFile('audio.mp4')
+            
+            setOutput({audio:URL.createObjectURL(new Blob([outputAudio.buffer], {type: 'video/mp4'})),video:URL.createObjectURL(new Blob([outputVideo.buffer], {type: 'video/mp4'}))})
+            setProcessing(false)
+        }
+
+    }
+
+
+    const extractFull = async () => {
+        if (invideo && start.current && end.current) {
+            
+            setProcessing(true)
+            setOutput(null)
+            setTab(false)
+            await addfile(ffmpeg, invideo)
+
+            const executedVideo = await ffmpeg.exec(['-i',invideo.name, '-c:v','copy','-an','video.mp4'])
+            if(executedVideo != 0){
+                toast.error('Something went wronge in video extraction')
+                return
+            }
+
+            const executedAudio = await ffmpeg.exec(['-i',invideo.name, '-map','0:a','-acodec','copy','audio.mp4'])
+            
+            if(executedAudio != 0){
+                toast.error('Something went wronge in audio extraction')
+                return
+            }else if (executedAudio == 0){
+                toast.success('Extracted successfully')
+            }
+            const outputVideo = await ffmpeg.readFile('video.mp4')
+            const outputAudio = await ffmpeg.readFile('audio.mp4')
+            setOutput({audio:URL.createObjectURL(new Blob([outputAudio.buffer], {type: 'video/mp4'})),video:URL.createObjectURL(new Blob([outputVideo.buffer], {type: 'video/mp4'}))})
+            setProcessing(false)
+        }
+
+    }
+
+    return (
+        <div className="mt-[40px] w-[70%] m-auto md:w-[60%] lg:w-[60%] max-w-[600px] ">
+            <div className="flex justify-between">
+                <button onClick={_=>setScreen(0)} className="active:scale-95 ml-[-30px]">
+                <svg className="w-[35px]" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M6 12H18M6 12L11 7M6 12L11 17" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g>
+                </svg>
+                </button>
+                <div className=" flex font-roboto text-md font-bold  rounded-lg shadow-2xl justify-center cursor-pointer border-2 border-dark_fg w-fit ">
+                    {tab == true ? <span onClick={_ => setTab(true)} className="p-2 rounded-l-lg hover:bg-dark_other bg-dark_other">Input</span> : <span onClick={_ => setTab(p => !p)} className="p-2 rounded-l-lg hover:bg-dark_other ">Input</span>}
+                    <span className="border-[1px] border-dark_fg "></span>
+                    {tab == false ? <span onClick={_ => setTab(false)} className="p-2 rounded-r-lg hover:bg-dark_other bg-dark_other">Output</span> : <span onClick={_ => setTab(p => !p)} className="p-2 rounded-r-lg hover:bg-dark_other">Output</span>}
+                </div>
+                <div></div>
+
+            </div>
+
+            {
+                tab ?
+                    invideo ?
+                        <div >
+                            <div className="-z- mt-[40px] relative">
+                                <video ref={video} className="bg-white m-auto" src={URL.createObjectURL(invideo)} controls></video>
+                                <button onClick={_ => setInVideo(null)} className="absolute top-[-20px] right-0 active:scale-95">
+                                    <svg className=" w-[40px] h-[40px]" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill-rule="evenodd" clip-rule="evenodd" d="M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12ZM8.96963 8.96965C9.26252 8.67676 9.73739 8.67676 10.0303 8.96965L12 10.9393L13.9696 8.96967C14.2625 8.67678 14.7374 8.67678 15.0303 8.96967C15.3232 9.26256 15.3232 9.73744 15.0303 10.0303L13.0606 12L15.0303 13.9696C15.3232 14.2625 15.3232 14.7374 15.0303 15.0303C14.7374 15.3232 14.2625 15.3232 13.9696 15.0303L12 13.0607L10.0303 15.0303C9.73742 15.3232 9.26254 15.3232 8.96965 15.0303C8.67676 14.7374 8.67676 14.2625 8.96965 13.9697L10.9393 12L8.96963 10.0303C8.67673 9.73742 8.67673 9.26254 8.96963 8.96965Z" fill="#c01c28"></path> </g>
+                                    </svg>
+
+                                </button>
+
+                            </div>
+                            <div className="flex flex-col">
+                                <Inputfield fileEle={video} title="Start Position" reference={start} initial={0} />
+                                <Inputfield fileEle={video} title="End Position" reference={end} initial={0} />
+                            </div>
+                            {invideo ? 
+                                <div className="flex mt-[50px] gap-[20px] justify-center">
+                                    <button disabled={processing} onClick={extractWithTime} className="disabled:bg-gray-500 disabled:text-white active:scale-90   font-bold bg-dark_success text-md text-dark_bg py-[10px] px-[20px] rounded-md">Extract</button> 
+                                    <button disabled={processing} onClick={extractFull} className="disabled:bg-gray-500 disabled:text-white active:scale-90   font-bold bg-dark_success text-md text-dark_bg py-[10px] px-[20px] rounded-md">Extract Full</button> 
+                                </div>
+                            : null}
+                        </div>
+
+
+                        :
+                        <label className="mt-[40px] cursor-pointer shadow-2xl  border-4 border-dark_fg border-dashed rounded-md flex justify-center items-center flex-col aspect-video">
+                            <input onChange={e => setInVideo(e.target.files[0])} className="hidden" type="file" accept="video/*" />
+                            <span className="font-bold text-md">Add a Video</span>
+                        </label>
+                    :
+                    <>
+
+                        {processing ? <CubeLoading />: null}
+
+                        {
+                            output ?
+                                <div className="my-[100px] flex flex-col items-center">
+                                    <video src={output.video} controls></video>
+                                    <a className="active:scale-90 w-fit block m-auto mt-[20px] font-bold bg-dark_success text-md text-dark_bg py-[10px] px-[20px] rounded-md" href={output.video} download={"output.mp4"}>Download</a>
+
+                                    <audio src={output.audio} className="mt-[50px]" controls></audio>
+                                    <a className="active:scale-90 w-fit block m-auto mt-[20px] font-bold bg-dark_success text-md text-dark_bg py-[10px] px-[20px] rounded-md" href={output.audio} download={"output.mp3"}>Download</a>
+                                </div>
+                                : null
+                        }
+
+                        { !processing && !output ? <p className="font-bold mt-[100px] text-dark_warning text-center">Nothing Output here</p> : null}
+
+
+                    </>
+
+
+            }
+        </div>
+
+    )
+}

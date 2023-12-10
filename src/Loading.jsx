@@ -226,13 +226,16 @@ export default ({ db, setUi, ffmpeg }) => {
     } else if (state == 1) {
         jsx = <p>{message}</p>
     } else if (state == 2) {
-        jsx = <p>{message}</p>
+        jsx =(<>
+            <div class="lds-facebook"><div></div><div></div><div></div></div>
+            <span className="text-md font-bold">{message}</span>
+        </>) 
     } else if (state == 3) {
         jsx = <p>{message}</p>
     }
 
     return (
-        <div>
+        <div className="mt-[320px] flex flex-col justify-center items-center">
             {jsx}
         </div>
     )
